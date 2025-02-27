@@ -14,3 +14,16 @@ export const getUser = async () => {
 
   return user;
 };
+
+export const getMinimalUser = async () => {
+  const session = await auth();
+  if (!session || !session.user) throw new Error("Unauthorized Action");
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email! },
+    select: { email: true, id: true },
+  });
+
+  if (!user) throw new Error("Unauthorized Action");
+
+  return user;
+};

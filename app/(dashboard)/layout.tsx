@@ -19,7 +19,7 @@ export default function RootLayout({
         <Header />
         <Separator />
         <div className="overflow-auto">
-          <div className="container max-md:px-2 flex-1 py-4 text-accent-foreground">
+          <div className="container max-md:px-2 flex-1 py-4">
             {children}
           </div>
         </div>
