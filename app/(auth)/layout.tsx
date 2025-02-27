@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Login | API SaaS",
+  title: "Login | Eraser.io",
   description: "Login to your account",
 };
 

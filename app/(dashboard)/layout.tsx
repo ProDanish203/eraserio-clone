@@ -3,8 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Todo App",
-  description: "Manage your tasks",
+  title: "Dashboard | Eraser.io",
+  description: "Dashboard for Eraser.io",
 };
 
 export default function RootLayout({
