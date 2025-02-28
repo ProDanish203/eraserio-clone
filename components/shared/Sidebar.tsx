@@ -22,7 +22,7 @@ export const Sidebar = () => {
       <div className="flex items-center justify-center gap-2 border-b-[1px] border-separate p-4 gap-x-4">
         <div className="flex items-center gap-x-2">
           <ListTodo size={20} className="stroke-primary" />
-          <p className="text-lg font-semibold">API SaaS</p>
+          <p className="text-lg font-semibold">Eraser.io</p>
         </div>
       </div>
       <div className="flex flex-col p-2 gap-y-2">
