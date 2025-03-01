@@ -4,16 +4,34 @@ import { Excalidraw, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
 
 interface CanvasProps {
   initialData: string;
-  onSave: (data: string) => Promise<void>;
+  onSaveTrigger: boolean;
+  setData: (data: string) => void;
+  setHandleTrigger: any;
 }
 
-export const Canvas: React.FC<CanvasProps> = ({ initialData, onSave }) => {
-  const [whiteBoardData, setWhiteBoardData] = useState<any>();
+export const Canvas: React.FC<CanvasProps> = ({
+  initialData,
+  onSaveTrigger,
+  setData,
+  setHandleTrigger,
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [whiteBoardData, setWhiteBoardData] = useState<string>("");
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  useEffect(() => {
+    saveWhiteboard();
+  }, [onSaveTrigger]);
+
+  const saveWhiteboard = () => {
+    if (whiteBoardData) {
+      setData(whiteBoardData);
+      setHandleTrigger((prev: boolean) => !prev);
+    }
+  };
 
   return (
     <div className="h-full">
@@ -23,15 +41,17 @@ export const Canvas: React.FC<CanvasProps> = ({ initialData, onSave }) => {
           initialData={{
             elements: initialData && JSON.parse(initialData),
           }}
-          onChange={(excalidrawElements, appState, files) =>
-            setWhiteBoardData(excalidrawElements)
-          }
+          onChange={(excalidrawElements, appState, files) => {
+            setWhiteBoardData(JSON.stringify(excalidrawElements));
+          }}
           UIOptions={{
             canvasActions: {
               saveToActiveFile: false,
               loadScene: false,
-              export: false,
-              toggleTheme: false,
+              export: {
+                saveFileToDisk: true,
+              },
+              toggleTheme: true,
             },
           }}
         >

@@ -8,7 +8,6 @@ import Checklist from "@editorjs/checklist";
 import Paragraph from "@editorjs/paragraph";
 import Warning from "@editorjs/warning";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
 
 const rawDocument = {
   time: 1550476186479,
@@ -33,13 +32,19 @@ const rawDocument = {
 };
 
 interface EditorProps {
-  initialData?: string;
-  onSave?: (content: string) => Promise<void>;
+  initialData: string;
+  setData: (data: string) => void;
+  onSaveTrigger: boolean;
+  setHandleTrigger: any;
 }
 
-export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
+export const Editor: React.FC<EditorProps> = ({
+  initialData,
+  onSaveTrigger,
+  setData,
+  setHandleTrigger,
+}) => {
   const ref = useRef<EditorJS>(null);
-  const [document, setDocument] = useState(rawDocument);
   const [isReady, setIsReady] = useState(false);
 
   const [isMounted, setIsMounted] = useState(false);
@@ -47,6 +52,10 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    onSaveDocument();
+  }, [onSaveTrigger]);
 
   useEffect(() => {
     isMounted && initEditor();
@@ -74,7 +83,7 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
 
   const initEditor = () => {
     try {
-      const data = initialData ? JSON.parse(initialData) : document;
+      const data = initialData ? JSON.parse(initialData) : rawDocument;
 
       const editor = new EditorJS({
         tools: {
@@ -113,16 +122,18 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
     }
   };
 
-  const onSaveDocument = () => {
+  const onSaveDocument = async () => {
     if (ref.current && isReady) {
-      ref.current
-        .save()
-        .then((outputData) => {
-          onSave && onSave(JSON.stringify(outputData));
-        })
-        .catch((error) => {
-          console.error("Saving failed: ", error);
-        });
+      try {
+        const outputData = await ref.current.save();
+
+        setData(JSON.stringify(outputData));
+        setHandleTrigger((prev: boolean) => !prev);
+        return outputData;
+      } catch (err) {
+        console.error("Saving failed: ", err);
+        return null;
+      }
     } else {
       console.warn("Editor not ready yet");
     }
@@ -130,9 +141,6 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
 
   return (
     <div className="">
-      <div className="flex justify-end px-2 py-2">
-        <Button onClick={onSaveDocument}>Save</Button>
-      </div>
       {isMounted && <div id="editorjs" className="ml-20"></div>}
     </div>
   );

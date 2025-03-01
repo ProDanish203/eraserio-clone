@@ -30,12 +30,7 @@ const DocumentEditorPage = async ({
       </Alert>
     );
   }
-  return (
-    <>
-      <DocumentHeader />
-      <DocumentEditorClientPage document={document} />
-    </>
-  );
+  return <DocumentEditorClientPage document={document} />;
 };
 
 export default DocumentEditorPage;
