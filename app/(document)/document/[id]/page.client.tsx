@@ -4,6 +4,7 @@ import { Canvas, Editor } from "@/components/shared";
 import { Document } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { DocumentHeader } from "./_components/DocumentHeader";
+import { useResizable } from "@/hooks/useResizable";
 
 export const DocumentEditorClientPage = ({
   document,
@@ -17,6 +18,8 @@ export const DocumentEditorClientPage = ({
     document.canvasData || ""
   );
 
+  const { width, startResizing } = useResizable(50);
+
   const handleSave = async () => {
     if (!editorData && !canvasData) return;
     await updateDocument(document.id, editorData, canvasData);
@@ -27,13 +30,10 @@ export const DocumentEditorClientPage = ({
   }, [handleTrigger]);
 
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <DocumentHeader onSave={() => setTriggerSave((prev) => !prev)} />
-      <div
-        className="grid grid-cols-1
-      md:grid-cols-2"
-      >
-        <div className="h-screen">
+      <div className="flex h-full w-full">
+        <div className="h-full" style={{ width: `${width}%` }}>
           <Editor
             onSaveTrigger={triggerSave}
             initialData={editorData}
@@ -41,7 +41,11 @@ export const DocumentEditorClientPage = ({
             setHandleTrigger={setHandleTrigger}
           />
         </div>
-        <div className=" h-screen border-l">
+        <div
+          className="w-2 cursor-col-resize bg-gray-300 hover:bg-gray-500"
+          onMouseDown={startResizing}
+        ></div>
+        <div className="h-full flex-grow border-l">
           <Canvas
             onSaveTrigger={triggerSave}
             initialData={canvasData}
@@ -50,6 +54,6 @@ export const DocumentEditorClientPage = ({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -140,8 +140,8 @@ export const Editor: React.FC<EditorProps> = ({
   };
 
   return (
-    <div className="">
-      {isMounted && <div id="editorjs" className="ml-20"></div>}
+    <div className="w-full h-full">
+      {isMounted && <div id="editorjs" className="ml-20 max-w-[50vw]"></div>}
     </div>
   );
 };
