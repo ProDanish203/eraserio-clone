@@ -24,7 +24,7 @@ export const createDocument = async (form: createDocumentSchemaType) => {
     });
 
     if (!document) throw new Error("Document not created");
-    revalidatePath("/");
+    revalidatePath("/dashboard");
     documentId = document.id;
   } catch (err) {
     console.log(err);
@@ -57,9 +57,26 @@ export const getDocumentById = async (id: string) => {
   return document;
 };
 
-export const updateDocument = async (id: string) => {
+export const updateDocument = async (
+  id: string,
+  content: string,
+  canvasData?: string
+) => {
   const session = await auth();
   if (!session || !session.user) throw new Error("Unauthorized action");
+
+  const document = await prisma.document.update({
+    where: {
+      id,
+    },
+    data: {
+      content,
+      canvasData,
+    },
+  });
+
+  revalidatePath(`/document/${id}`);
+  return document;
 };
 
 export const deleteDocument = async (id: string) => {
@@ -71,6 +88,6 @@ export const deleteDocument = async (id: string) => {
   });
 
   if (!document) throw new Error("Document not deleted");
-  revalidatePath("/");
-  redirect("/");
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
 };
