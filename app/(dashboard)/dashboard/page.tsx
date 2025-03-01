@@ -1,8 +1,10 @@
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserDocuments, CreateDocumentDialog } from "./_components/index";
+import { getDocuments } from "@/actions/documents";
 
-export default function Home() {
+export default async function Home() {
+  const documents = await getDocuments();
   return (
     <div className="flex flex-col flex-1 h-full">
       <div className="flex justify-between">
@@ -17,7 +19,7 @@ export default function Home() {
 
       <div className="h-full py-6">
         <Suspense fallback={<UserDocumentsSkeleton />}>
-          <UserDocuments />
+          <UserDocuments documents={documents} />
         </Suspense>
       </div>
     </div>

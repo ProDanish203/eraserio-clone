@@ -1,4 +1,3 @@
-import { getDocuments } from "@/actions/documents";
 import React from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, ClockIcon, File, InboxIcon } from "lucide-react";
@@ -6,9 +5,9 @@ import { CreateDocumentDialog } from "./CreateDocumentDialog";
 import { DocumentActions } from "./DocumentHelpers";
 import Link from "next/link";
 import { format } from "date-fns";
+import { Document } from "@prisma/client";
 
-export const UserDocuments = async () => {
-  const documents = await getDocuments();
+export const UserDocuments = ({ documents }: { documents: Document[] }) => {
   if (!documents) {
     return (
       <Alert variant={"destructive"}>

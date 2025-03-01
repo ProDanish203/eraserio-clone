@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Excalidraw, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
 
 interface CanvasProps {
@@ -9,11 +9,15 @@ interface CanvasProps {
 
 export const Canvas: React.FC<CanvasProps> = ({ initialData, onSave }) => {
   const [whiteBoardData, setWhiteBoardData] = useState<any>();
-  console.log("whiteBoardData", whiteBoardData);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
     <div className="h-full">
-      {/* <Excalidraw /> */}
-      {/* {initialData && (
+      {isLoaded && (
         <Excalidraw
           theme="light"
           initialData={{
@@ -45,7 +49,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialData, onSave }) => {
             </WelcomeScreen.Center>
           </WelcomeScreen>
         </Excalidraw>
-      )} */}
+      )}
     </div>
   );
 };

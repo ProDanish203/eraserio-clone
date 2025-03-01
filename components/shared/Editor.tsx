@@ -42,19 +42,26 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
   const [document, setDocument] = useState(rawDocument);
   const [isReady, setIsReady] = useState(false);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
-    initEditor();
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    isMounted && initEditor();
 
     return () => {
       if (ref.current) {
         ref.current.destroy();
+        // @ts-ignore
         ref.current = null;
       }
     };
-  }, [initialData]);
+  }, [isMounted, initialData]);
 
   useEffect(() => {
-    if (initialData && ref.current && isReady) {
+    if (initialData && ref.current && isReady && isMounted) {
       try {
         const parsedData = JSON.parse(initialData);
         ref.current.render(parsedData);
@@ -63,7 +70,7 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
         toast.error("Failed to load document data");
       }
     }
-  }, [initialData, isReady]);
+  }, [isMounted, initialData, isReady]);
 
   const initEditor = () => {
     try {
@@ -95,6 +102,7 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
         holder: "editorjs",
         data: data,
         onReady: () => {
+          // @ts-ignore
           ref.current = editor;
           setIsReady(true);
         },
@@ -125,7 +133,7 @@ export const Editor: React.FC<EditorProps> = ({ initialData, onSave }) => {
       <div className="flex justify-end px-2 py-2">
         <Button onClick={onSaveDocument}>Save</Button>
       </div>
-      <div id="editorjs" className="ml-20"></div>
+      {isMounted && <div id="editorjs" className="ml-20"></div>}
     </div>
   );
 };
