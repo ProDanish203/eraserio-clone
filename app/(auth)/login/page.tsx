@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Loader2, Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";

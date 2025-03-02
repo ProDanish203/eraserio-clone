@@ -23,8 +23,8 @@ export const DocumentHeader = ({ onSave }: { onSave: () => void }) => {
     <header className="bg-secondary/70 dark:bg-secondary/30 dark:text-foreground text-muted-foreground flex items-center justify-between md:px-6 px-4 py-6 h-[60px] w-full border-b-secondary-foreground/30 border-b">
       {/* Left Side */}
       <div>
-        {isHome && !isLoading && data ? (
-          <Link href="/dashbaord">Dashboard</Link>
+        {isHome && data ? (
+          <Link href="/dashboard">Dashboard</Link>
         ) : (
           !isHome && (
             <Button
@@ -47,7 +47,7 @@ export const DocumentHeader = ({ onSave }: { onSave: () => void }) => {
         >
           Save
         </Button>
-        {isHome && !isLoading && !data ? (
+        {isHome && !data ? (
           <Button
             onClick={() => router.push("/login")}
             variant="secondary"
