@@ -1,7 +1,5 @@
 import React from "react";
-import { DocumentHeader } from "./_components/DocumentHeader";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Editor } from "@/components/shared";
 import { getDocumentById } from "@/actions/documents";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";

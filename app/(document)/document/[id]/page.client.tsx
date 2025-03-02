@@ -1,10 +1,11 @@
 "use client";
 import { updateDocument } from "@/actions/documents";
-import { Canvas, Editor } from "@/components/shared";
 import { Document } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import { DocumentHeader } from "./_components/DocumentHeader";
 import { useResizable } from "@/hooks/useResizable";
+import { Editor } from "@/components/shared/Editor";
+import { Canvas } from "@/components/shared/Canvas";
+import { DocumentHeader } from "@/components/shared/DocumentHeader";
 
 export const DocumentEditorClientPage = ({
   document,
