@@ -23,7 +23,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   }, []);
 
   useEffect(() => {
-    saveWhiteboard();
+    isLoaded && saveWhiteboard();
   }, [onSaveTrigger]);
 
   const saveWhiteboard = () => {
