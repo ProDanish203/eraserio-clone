@@ -32,7 +32,7 @@ export const UserDocuments = ({ documents }: { documents: Document[] }) => {
             Click the button below to create your first document
           </p>
         </div>
-        <CreateDocumentDialog triggerText="Create your first workflow" />
+        <CreateDocumentDialog triggerText="Create your first document" />
       </div>
     );
   }

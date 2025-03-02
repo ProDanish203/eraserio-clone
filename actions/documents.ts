@@ -1,6 +1,5 @@
 "use server";
 import { prisma } from "@/lib/db";
-import { auth } from "@/middleware";
 import { createDocumentSchema, createDocumentSchemaType } from "@/schema";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -34,11 +33,11 @@ export const createDocument = async (form: createDocumentSchemaType) => {
 };
 
 export const getDocuments = async () => {
-  const session = await auth();
-  if (!session || !session.user) throw new Error("Unauthorized action");
+  const user = await getMinimalUser();
+  if (!user) throw new Error("Unauthorized action");
 
   const documents = await prisma.document.findMany({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
 
@@ -46,8 +45,8 @@ export const getDocuments = async () => {
 };
 
 export const getDocumentById = async (id: string) => {
-  const session = await auth();
-  if (!session || !session.user) throw new Error("Unauthorized action");
+  const user = await getMinimalUser();
+  if (!user) throw new Error("Unauthorized action");
 
   const document = await prisma.document.findUnique({
     where: { id },
@@ -62,8 +61,8 @@ export const updateDocument = async (
   content: string,
   canvasData?: string
 ) => {
-  const session = await auth();
-  if (!session || !session.user) throw new Error("Unauthorized action");
+  const user = await getMinimalUser();
+  if (!user) throw new Error("Unauthorized action");
 
   const document = await prisma.document.update({
     where: {
@@ -80,8 +79,8 @@ export const updateDocument = async (
 };
 
 export const deleteDocument = async (id: string) => {
-  const session = await auth();
-  if (!session || !session.user) throw new Error("Unauthorized action");
+  const user = await getMinimalUser();
+  if (!user) throw new Error("Unauthorized action");
 
   const document = await prisma.document.delete({
     where: { id },
