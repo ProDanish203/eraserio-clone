@@ -49,7 +49,7 @@ export function DocumentActions({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer flex items-center gap-2"
-            onSelect={() => router.push(`documents/${documentId}`)}
+            onSelect={() => router.push(`document/${documentId}`)}
           >
             <EyeIcon size={16} />
             View
